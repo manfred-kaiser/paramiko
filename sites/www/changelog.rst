@@ -2,6 +2,9 @@
 Changelog
 =========
 
+- :bug:`- major` Added a ``password`` kwarg to `PKey.from_type_string
+  <paramiko.pkey.PKey.from_type_string>` so it can handle encrypted keys like
+  most other PKey constructors already could.
 - :support:`-` Renamed `PKey.from_path <paramiko.pkey.PKey.from_path>`'s
   ``passphrase`` argument to ``password`` so it's consistent with all the other
   methods of instantiating PKey objects.

@@ -198,7 +198,9 @@ class PKey:
         return key
 
     @staticmethod
-    def from_type_string(key_type, key_bytes):
+    def from_type_string(
+        key_type: str, key_bytes: bytes, password: Optional[str] = None
+    ):
         """
         Given type `str` & raw `bytes`, return a `PKey` subclass instance.
 
@@ -210,6 +212,8 @@ class PKey:
         :param bytes key_bytes:
             The raw byte data forming the key material, as expected by
             subclasses' ``data`` parameter.
+        :param str password:
+            Optional password used to decrypt ``key_bytes``.
 
         :returns:
             A `PKey` subclass instance.
@@ -218,13 +222,14 @@ class PKey:
             `UnknownKeyType`, if no registered classes knew about this type.
 
         .. versionadded:: 3.2
+        .. versionchanged:: 5.0
+            Added the ``password`` kwarg.
         """
         from paramiko import key_classes
 
         for key_class in key_classes:
             if key_type in key_class.identifiers():
-                # TODO: needs to passthru things like passphrase
-                return key_class(data=key_bytes)
+                return key_class(data=key_bytes, password=password)
         raise UnknownKeyType(key_type=key_type, key_bytes=key_bytes)
 
     @classmethod
